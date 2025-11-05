@@ -12,7 +12,7 @@ part of 'WeatherApi.dart';
 
 class _WeatherApi implements WeatherApi {
   _WeatherApi(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://api.openweathermap.org/geo/1.0';
+    baseUrl ??= 'https://api.openweathermap.org';
   }
 
   final Dio _dio;
@@ -22,16 +22,55 @@ class _WeatherApi implements WeatherApi {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<WeatherModel> getWeather(
+    double lat,
+    double lon, {
+    String appid = '8328e237e336644e5fba089728b5ad36',
+    String lang = 'pt_br',
+    String units = 'metric',
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lon': lon,
+      r'appid': appid,
+      r'lang': lang,
+      r'units': units,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<WeatherModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/data/2.5/weather',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late WeatherModel _value;
+    try {
+      _value = WeatherModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<List<Coordinates>> getCityData(
-    String cityName,
-    int limit,
-    String apiKey,
-  ) async {
+    String cityName, {
+    int limit = 10,
+    String appid = '8328e237e336644e5fba089728b5ad36',
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'q': cityName,
       r'limit': limit,
-      r'appid': apiKey,
+      r'appid': appid,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -39,7 +78,7 @@ class _WeatherApi implements WeatherApi {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/direct',
+            '/geo/1.0/direct',
             queryParameters: queryParameters,
             data: _data,
           )

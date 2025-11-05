@@ -91,14 +91,3 @@ class Command1<T, A> extends Command<T> {
     await _execute(() => _action(argument));
   }
 }
-
-typedef CommandAction3<T, A, B, C> = Future<Result<T>> Function(A, B, C);
-
-class Command3<T, A, B, C> extends Command<T> {
-  Command3(this._action);
-  final CommandAction3<T, A, B, C> _action;
-
-  Future<void> execute(A a, B b, C c) async {
-    await _execute(() => _action(a, b, c));
-  }
-}

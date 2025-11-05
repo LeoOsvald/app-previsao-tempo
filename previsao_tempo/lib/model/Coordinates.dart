@@ -7,10 +7,10 @@ part 'Coordinates.g.dart';
 @JsonSerializable()
 class Coordinates {
   final double lat;
-  final double long;
-  final String cityName;
+  final double lon;
+  final String name;
 
-  Coordinates({required this.lat, required this.long,required this.cityName});
+  Coordinates({required this.lat, required this.lon,required this.name});
 
 
 factory Coordinates.fromJson(Map<String, dynamic> json) =>
