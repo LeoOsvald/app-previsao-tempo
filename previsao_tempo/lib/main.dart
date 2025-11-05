@@ -112,7 +112,15 @@ class MainApp extends StatelessWidget {
                             itemCount: viewModel.weatherData!.WeatherList.length,
                             itemBuilder: (context, index) {
                               final cidade = viewModel.weatherData!.WeatherList[index];
-
+                              GestureDetector(
+                              onTap: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => WeatherDetailPage(cidade: cidade),
+                                //   ),
+                                // );
+                              });
                               return Container(
                                 margin: const EdgeInsets.symmetric(vertical: 8),
                                 decoration: BoxDecoration(

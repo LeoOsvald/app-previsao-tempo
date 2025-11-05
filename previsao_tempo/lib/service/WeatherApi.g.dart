@@ -63,7 +63,7 @@ class _WeatherApi implements WeatherApi {
   @override
   Future<List<Coordinates>> getCityData(
     String cityName, {
-    int limit = 10,
+    String limit = '1',
     String appid = '8328e237e336644e5fba089728b5ad36',
   }) async {
     final _extra = <String, dynamic>{};

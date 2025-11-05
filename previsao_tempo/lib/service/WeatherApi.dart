@@ -24,7 +24,7 @@ abstract class WeatherApi {
   @GET('/geo/1.0/direct')
   Future<List<Coordinates>> getCityData(
     @Query('q') String cityName,{
-    @Query('limit') int limit = 10,
+    @Query('limit') String limit = '1',
     @Query('appid') String appid = '8328e237e336644e5fba089728b5ad36',
   }
   );

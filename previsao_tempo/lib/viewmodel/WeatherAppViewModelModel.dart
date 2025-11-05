@@ -51,13 +51,20 @@ class WeatherAppViewModelModel extends ChangeNotifier {
   {
     try
     {
+      cidades.clear();
+      print(city);
       final coordinates = await _coordinatesRepository.getCoordinates(city);
 
-      if(cidades.isNotEmpty)
-        cidades.clear();
+      print(coordinates);
+
+
       
       for(var coordinate in coordinates)
+      {
         cidades.add(coordinate);
+        print(coordinate.name);
+      }
+        
 
       final result = _getWeatherList();
 
