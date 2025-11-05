@@ -9,18 +9,18 @@ class CoordinatesRepositoryImpl implements CoordinatesRepository{
 
   @override
   final WeatherApi api;
-  Future<Result<List<Coordinates>>> getCoordinates(cityName) async{
+  Future<List<Coordinates>> getCoordinates(cityName) async{
     try
     {
       var cities = await api.getCityData(cityName);
        if (cities is Error<Coordinates>) {
-        return Result.error(Exception('Error fetching cities'));
+        throw Exception('Error fetching cities');
       }
-      return Result.ok(cities);
+      return cities;
     }
     on Exception catch(e)
     {
-      return Result.error(e);
+      throw e;
     }
     
   }
@@ -28,5 +28,5 @@ class CoordinatesRepositoryImpl implements CoordinatesRepository{
 
 
 abstract class CoordinatesRepository {
-  Future<Result<List<Coordinates>>> getCoordinates(q);
+  Future<List<Coordinates>> getCoordinates(q);
 }

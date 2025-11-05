@@ -23,7 +23,7 @@ class WeatherAppViewModelModel extends ChangeNotifier {
   final WeatherRepository _weatherRepository;
   final CoordinatesRepository _coordinatesRepository;
 
-  List<Coordinates> cidades = [Coordinates(lat: -28.2628, lon: -52.4067,name: "Passo Fundo"), Coordinates(lat: -30.0331,lon: -51.2300, name: "Porto Alegre"),Coordinates(lat: -27.5945,lon: -48.5477,name: "Florianopolis"),Coordinates(lat: -25.4284,lon: -49.2733,name: "Curitiba"),Coordinates(lat: -23.5505,lon: -46.6333,name: "Sao Paulo"),];
+  List<Coordinates> cidades = [Coordinates(lat: -28.2628, lon: -52.4067,name: "Passo Fundo"), Coordinates(lat: -30.0331,lon: -51.2300, name: "Porto Alegre"),Coordinates(lat: -27.5945,lon: -48.5477,name: "Florianopolis"),Coordinates(lat: -25.4284,lon: -49.2733,name: "Curitiba"),Coordinates(lat: -23.5506507,lon:-46.6333824,name: "Sao Paulo"),];
 
   Weathers? _weatherData;
   Weathers? get weatherData => _weatherData;
@@ -46,4 +46,30 @@ class WeatherAppViewModelModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> getCityWeather(city) async 
+  {
+    try
+    {
+      final coordinates = await _coordinatesRepository.getCoordinates(city);
+
+      if(cidades.isNotEmpty)
+        cidades.clear();
+      
+      for(var coordinate in coordinates)
+        cidades.add(coordinate);
+
+      final result = _getWeatherList();
+
+    } 
+    catch (e) 
+    {
+      throw e;
+    }
+    finally
+    {
+      notifyListeners();
+    }
 }
+}
+
