@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
-
+import 'package:previsao_tempo/model/Coordinates.dart';
+import 'package:previsao_tempo/repository/CoordinatesRepository.dart';
+import 'package:previsao_tempo/service/WeatherApi.dart';
+import 'package:previsao_tempo/service/WeatherApi.dart';
+import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (context) => WeatherApi(Dio())),
+        Provider(
+          create: (context) =>
+              CoordinatesRepositoryImpl(api: context.read()),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -116,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: Center(
         child: TextField(
+          // onChanged: (value) => wehater,
           decoration: InputDecoration(
             hintText: 'Digite o nome da cidade',
             border: OutlineInputBorder(
